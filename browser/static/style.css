@@ -1,0 +1,64 @@
+
+* 
+{
+	padding: 0;
+	margin: 0;
+}
+
+html, body {
+	font-family: 'bebasneue_bold';
+	background: black url('loader.gif') center no-repeat;
+	overflow: hidden;
+	height:100%;
+	margin: 0;
+}
+
+canvas 
+{
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+}
+
+@font-face {
+    font-family: 'kanit';
+    src: url('kanit-black-webfont.woff2') format('woff2'),
+         url('kanit-black-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+	font-family: 'bebasneue_bold';
+	src: url('bebasneue_bold.woff2') format('woff2'),
+	url('bebasneue_bold.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+#overlay {
+	color: white;
+	width: 100%;
+	height: 100vh;
+	line-height: 100vh;
+	text-align: center;
+}
+
+#overlay span {
+	display: inline-block;
+	vertical-align: middle;
+	line-height: normal;
+	font-size: 200px;
+	width: 100%;
+	text-align: center;
+	cursor: pointer;
+}
+
+.hide {
+	visibility: hidden;
+	position: absolute;
+}
+

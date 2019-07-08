@@ -1,9 +1,11 @@
 
 import { shader } from './shader';
-import Mouse from './engine/mouse';
+import { mouse } from './engine/mouse';
+import { camera } from './camera';
 import * as twgl from 'twgl';
 const gl = document.getElementById("canvas").getContext("webgl");
 const m4 = twgl.m4;
+const v3 = twgl.v3;
 
 export default function() {
 
@@ -18,25 +20,23 @@ export default function() {
 		time: 0.0,
 	};
 
-	var projection = m4.perspective(
-			60.0 * Math.PI / 180.0,
-			gl.canvas.width / gl.canvas.height,
-			0.01, 100.0);
-
-	var eye = [0.1, 0.5, 3];
-	var target = [0, 0, 0];
-	var camera = m4.lookAt(eye, target, [0,1,0]);
-	var world = m4.identity;
+	onWindowResize();
+	window.addEventListener('resize', onWindowResize, false);
 
 	shader.load(function() {
-		window.addEventListener('resize', onWindowResize, false);
-		window.addEventListener('mousemove', Mouse.onMove, false);
 		requestAnimationFrame(animate);
-		onWindowResize();
 	});
 
 	function animate(elapsed) {
-		uniforms.time = elapsed/1000.0;
+		elapsed = elapsed/1000.0;
+		uniforms.time = elapsed;
+		mouse.update(elapsed);
+		camera.update(elapsed);
+
+		if (mouse.clic) {
+			camera.rotation[0] += mouse.delta.x * 0.01;
+			camera.rotation[1] += mouse.delta.y * 0.01;
+		}
 
 		gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 		gl.enable(gl.DEPTH_TEST);
@@ -44,12 +44,7 @@ export default function() {
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 		gl.clearColor(0,0,0,1);
 
-		eye[0] = Math.cos(uniforms.time)*3;
-		eye[2] = Math.sin(uniforms.time)*3;
-
-		const camera = m4.lookAt(eye, target, [0, 1, 0]);
-		const view = m4.inverse(camera);
-		uniforms.viewProjection = m4.multiply(projection, view);
+		uniforms.viewProjection = camera.viewProjection;
 
 		var programInfo = shader.program.render;
 		gl.useProgram(programInfo.program);
@@ -61,9 +56,6 @@ export default function() {
 
 	function onWindowResize() {
 		twgl.resizeCanvasToDisplaySize(gl.canvas);
-		projection = m4.perspective(
-			60.0 * Math.PI / 180.0,
-			gl.canvas.width / gl.canvas.height,
-			0.01, 100.0);
+		camera.resize();
 	}
 }

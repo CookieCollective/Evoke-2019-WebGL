@@ -1,44 +1,44 @@
 
-var Mouse = {};
+export var mouse = {};
 
-Mouse.x = 0;
-Mouse.y = 0;
-Mouse.down = false;
+mouse.x = 0;
+mouse.y = 0;
+mouse.delta = { x: 0, y: 0 };
+mouse.last = { x: 0, y: 0 };
+mouse.clic = false;
 
-// Pan
-Mouse.panX = 0;
-Mouse.panY = 0;
-Mouse.panStartX = 0;
-Mouse.panStartY = 0;
-Mouse.panStarted = false;
-
-Mouse.onMove = function(event)
+mouse.onmove = function(event)
 {
-	Mouse.x = event.clientX;
-	Mouse.y = event.clientY;
-  if (Mouse.panStarted)
-  {
-    Mouse.panX = Mouse.x - Mouse.panStartX;
-    Mouse.panY = Mouse.y - Mouse.panStartY;
-  }
+	mouse.x = event.clientX;
+	mouse.y = event.clientY;
 };
 
-Mouse.onClic = function(event)
+mouse.update = function(elapsed)
 {
-	Mouse.x = event.clientX;
-	Mouse.y = event.clientY;
-	Mouse.down = true;
+  mouse.delta.x = mouse.last.x - mouse.x;
+  mouse.delta.y = mouse.last.y - mouse.y;
+  mouse.last.x = mouse.x;
+  mouse.last.y = mouse.y;
+}
 
-  // Pan
-  Mouse.panStartX = Mouse.x - Mouse.panX;
-  Mouse.panStartY = Mouse.y - Mouse.panY;
-  Mouse.panStarted = true;
+mouse.onmousedown = function(event)
+{
+	mouse.clic = true;
 };
 
-Mouse.onMouseUp = function(event)
+mouse.onmouseup = function(event)
 {
-	Mouse.down = false;
-  Mouse.panStarted = false;
+	mouse.clic = false;
 };
 
-export default Mouse;
+mouse.onmouseout = function(event)
+{
+  mouse.clic = false;
+  mouse.delta.x = 0;
+  mouse.delta.y = 0;
+};
+
+window.addEventListener('mousemove', mouse.onmove, false);
+window.addEventListener('mousedown', mouse.onmousedown, false);
+window.addEventListener('mouseout', mouse.onmouseout, false);
+window.addEventListener('mouseup', mouse.onmouseup, false);

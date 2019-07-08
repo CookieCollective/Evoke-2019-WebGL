@@ -33,14 +33,10 @@ System.config({
     "css": "github:systemjs/plugin-css@0.1.37",
     "dat.gui": "github:dataarts/dat.gui@0.6.5",
     "gl-matrix": "github:toji/gl-matrix@2.8.1",
-    "twgl": "github:greggman/twgl.js@4.11.0",
     "json": "github:systemjs/plugin-json@0.3.0",
-    "postprocessing": "github:vanruesc/postprocessing@3.1.0",
     "socket.io-client": "github:socketio/socket.io-client@2.2.0",
     "text": "github:systemjs/plugin-text@0.0.11",
-    "three": "github:mrdoob/three.js@master",
-    "three.js": "github:mrdoob/three.js@master",
-    "vanruesc/postprocessing": "github:vanruesc/postprocessing@3.1.0",
+    "twgl": "github:greggman/twgl.js@4.11.0",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.5.0"
     },

@@ -2,7 +2,9 @@
 import { shader } from './engine/shader';
 import { mouse } from './engine/mouse';
 import { camera } from './engine/camera';
-import { buffer } from './engine/buffer';
+import { material } from './engine/material';
+import { mesh } from './engine/mesh';
+import { vegetal } from './project/vegetal';
 import Geometry from './engine/geometry';
 import * as twgl from 'twgl';
 const gl = document.getElementById("canvas").getContext("webgl");
@@ -13,10 +15,6 @@ export default function() {
 		resolution: [gl.canvas.width, gl.canvas.height],
 		time: 0.0,
 	};
-
-	Object.keys(buffer).forEach(key => {
-		buffer[key].uniforms = uniforms;
-	});
 
 	onWindowResize();
 	window.addEventListener('resize', onWindowResize, false);
@@ -43,18 +41,32 @@ export default function() {
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 		gl.clearColor(0,0,0,1);
 
-		draw(buffer["particle"]);
-		draw(buffer["ribbon"]);
+		// draw(mesh.particle, material.particle);
+		// draw(mesh.ribbon, material.ribbon);
+
+		var plant = vegetal.plant;
+		uniforms.branchCount = plant.branchCount;
+		uniforms.branchPerBranch = plant.branchPerBranch;
+		uniforms.color = [0.521, 0.839, 0.541];
+		uniforms.noiseRange = 0.5;
+		uniforms.noiseScale = 2.0;
+		uniforms.twistSin = 1.0;
+		uniforms.noiseRangeSub = 0.5;
+		uniforms.noiseScaleSub = 4.0;
+		uniforms.twistSinSub = 1.0;
+		draw(plant.branch, material.branch);
+		draw(plant.subbranch, material.subbranch);
 
 		requestAnimationFrame(animate);
 	}
 
-	function draw (buffer) {
-		const programInfo = shader.program[buffer.material];
-		gl.useProgram(programInfo.program);
-		twgl.setBuffersAndAttributes(gl, programInfo, buffer.info);
-		twgl.setUniforms(programInfo, buffer.uniforms);
-		twgl.drawBufferInfo(gl, buffer.info);
+	function draw (mesh, material) {
+		if (material != null) {
+			gl.useProgram(material.program);
+			twgl.setBuffersAndAttributes(gl, material, mesh);
+			twgl.setUniforms(material, uniforms);
+			twgl.drawBufferInfo(gl, mesh);
+		}
 	}
 
 	function onWindowResize() {

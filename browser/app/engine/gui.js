@@ -3,7 +3,6 @@ import parameters from './parameters';
 
 export var gui = {};
 
-gui.gone = false;
 gui.go = function() {
  	gui = new dat.gui.GUI();
 	gui.remember(parameters);
@@ -24,6 +23,5 @@ gui.go = function() {
 		folder.open();
 	});
 	gui.close();
-	gui.gone = true;
 }
 

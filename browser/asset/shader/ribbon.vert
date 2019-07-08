@@ -10,9 +10,10 @@ varying vec4 vColor;
 void main () {
 	vUV = anchor.xy * 0.5 + 0.5;
 	vColor = vec4(1);
-	vec3 pos = position;
-	pos.xy *= rotation(time + anchor.y);
-	pos.zy *= rotation(time + anchor.y);
-	pos.xy += anchor.xy * 0.01;
+	vec3 pos = normalize(position);
+	float angle = time + anchor.y;
+	pos.xy *= rotation(angle * 2.9);
+	pos.zy *= rotation(angle * 1.5);
+	pos.x += anchor.x * 0.02;
 	gl_Position = viewProjection * vec4(pos, 1);
 }

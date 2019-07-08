@@ -8,7 +8,7 @@ const gl = document.getElementById("canvas").getContext("webgl");
 export var shader = {};
 
 shader.list = {
-	"render": ["fullscreen.vert", "render.frag"],
+	"render": ["quad.vert", "render.frag"],
 };
 
 shader.data = {};

@@ -1,11 +1,11 @@
 
-import { assets } from './assets';
+import { shader } from './shader';
 import Mouse from './engine/mouse';
 import * as twgl from 'twgl';
+const gl = document.getElementById("canvas").getContext("webgl");
 
 export default function() {
 
-	const gl = document.getElementById("canvas").getContext("webgl");
 	const attributes = {
 		position: [ -1,-1,0, 1,-1,0, 1,1,0, -1,1,0 ],
 		texcoord: [ 0,0, 1,0, 1,1, 0,1 ],
@@ -16,10 +16,8 @@ export default function() {
 		resolution: [gl.canvas.width, gl.canvas.height],
 		time: 0.0,
 	};
-	var programInfo;
 
-	assets.load(function() {
-		programInfo = twgl.createProgramInfo(gl, [assets["fullscreen.vert"], assets["render.frag"]]);
+	shader.load(function() {
 		window.addEventListener('resize', onWindowResize, false);
 		window.addEventListener('mousemove', Mouse.onMove, false);
 		requestAnimationFrame(animate);
@@ -27,7 +25,11 @@ export default function() {
 	});
 
 	function animate(elapsed) {
+		uniforms.time = elapsed/1000.0;
+
 		gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+		var programInfo = shader.program.render;
 		gl.useProgram(programInfo.program);
 		twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
 		twgl.setUniforms(programInfo, uniforms);

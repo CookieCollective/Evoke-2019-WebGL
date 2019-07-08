@@ -62,26 +62,24 @@ export default class Geometry {
 		return geometries;
 	}
 
-	static createLine (geometry, subdivisions) {
-		var positions = [];
-		var nexts = [];
-		var colors = [];
 		// geometry = new THREE.EdgesGeometry(geometry);
-		var arrayPosition = geometry.attributes.position.array;
-		var index = geometry.index.array;
+	static createLine (attributes, subdivisions) {
+		var arrays = {
+			position: [],
+			next: [],
+		};
+		var arrayPosition = attributes.position;
+		var index = attributes.indices;
 		var count = index.length / 3;
-		var line = new THREE.BufferGeometry();
 		for (var i = 0; i < count; ++i) {
 			for (var t = 0; t < 3; ++t) {
 				for (var x = 0; x < 3; ++x) {
-					positions.push(arrayPosition[(index[i * 3 + t] * 3 + x)%arrayPosition.length]);
-					nexts.push(arrayPosition[(index[i*3 + (t+1)%3] * 3 + x)%arrayPosition.length]);
+					arrays.position.push(arrayPosition[(index[i * 3 + t] * 3 + x)%arrayPosition.length]);
+					arrays.next.push(arrayPosition[(index[i*3 + (t+1)%3] * 3 + x)%arrayPosition.length]);
 				}
 			}
 		}
-		geometry.addAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
-		geometry.addAttribute('next', new THREE.BufferAttribute(new Float32Array(nexts), 3));
-		return Geometry.create(geometry.attributes, subdivisions);
+		return Geometry.create(arrays, subdivisions);
 	}
 
 	static clone (geometryToClone, instances) {

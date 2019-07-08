@@ -8,7 +8,7 @@ const gl = document.getElementById("canvas").getContext("webgl");
 export var shader = {};
 
 shader.list = {
-	"render": ["particle.vert", "render.frag"],
+	"particle": ["particle.vert", "color.frag"],
 };
 
 shader.data = {};

@@ -8,6 +8,7 @@ import { vegetal } from './project/vegetal';
 import Geometry from './engine/geometry';
 import * as twgl from 'twgl';
 const gl = document.getElementById("canvas").getContext("webgl");
+const m4 = twgl.m4;
 
 export default function() {
 
@@ -28,7 +29,7 @@ export default function() {
 		mouse.update(elapsed);
 		if (mouse.clic) {
 			camera.rotation[0] += mouse.delta.x * 0.01;
-			camera.rotation[1] -= mouse.delta.y * 0.01;
+			camera.rotation[1] += mouse.delta.y * 0.01;
 		}
 		camera.update(elapsed);
 
@@ -44,18 +45,10 @@ export default function() {
 		// draw(mesh.particle, material.particle);
 		// draw(mesh.ribbon, material.ribbon);
 
-		var plant = vegetal.plant;
-		uniforms.branchCount = plant.branchCount;
-		uniforms.branchPerBranch = plant.branchPerBranch;
-		uniforms.color = [0.521, 0.839, 0.541];
-		uniforms.noiseRange = 0.5;
-		uniforms.noiseScale = 2.0;
-		uniforms.twistSin = 1.0;
-		uniforms.noiseRangeSub = 0.5;
-		uniforms.noiseScaleSub = 4.0;
-		uniforms.twistSinSub = 1.0;
-		draw(plant.branch, material.branch);
-		draw(plant.subbranch, material.subbranch);
+		for (var index = 0; index < vegetal.plants.length; ++index) {
+			uniforms.model = m4.translation([0,0,index*.2]);
+			drawPlant(vegetal.plants[index]);
+		}
 
 		requestAnimationFrame(animate);
 	}
@@ -67,6 +60,22 @@ export default function() {
 			twgl.setUniforms(material, uniforms);
 			twgl.drawBufferInfo(gl, mesh);
 		}
+	}
+
+	function drawPlant (plant) {
+		uniforms.branchCount = plant.branchCount;
+		uniforms.branchPerBranch = plant.branchPerBranch;
+		uniforms.leafCount = plant.leafCount;
+		uniforms.color = plant.color;
+		uniforms.noiseRange = plant.noiseRange;
+		uniforms.noiseScale = plant.noiseScale;
+		uniforms.twistSin = plant.twistSin;
+		uniforms.noiseRangeSub = plant.noiseRangeSub;
+		uniforms.noiseScaleSub = plant.noiseScaleSub;
+		uniforms.twistSinSub = plant.twistSinSub;
+		draw(plant.meshes.branch, material.branch);
+		draw(plant.meshes.subbranch, material.subbranch);
+		draw(plant.meshes.leaf, material.leaf);
 	}
 
 	function onWindowResize() {

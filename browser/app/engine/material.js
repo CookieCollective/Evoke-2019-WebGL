@@ -7,4 +7,5 @@ export var material = {
 	ribbon: ["ribbon.vert", "color.frag"],
 	branch: ["branch.vert", "color.frag"],
 	subbranch: ["subbranch.vert", "color.frag"],
+	leaf: ["leaf.vert", "color.frag"],
 };

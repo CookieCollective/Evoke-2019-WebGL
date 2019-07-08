@@ -1,7 +1,7 @@
 
 attribute vec3 position, anchor, quantity;
 
-uniform mat4 viewProjection;
+uniform mat4 viewProjection, model;
 uniform vec3 color;
 uniform float time;
 uniform float twistSin, noiseScale, noiseRange;
@@ -18,7 +18,7 @@ void main () {
 	size *= sin((1.0-y)*PI/2.0);
 	pos.y += anchor.x * size;
 
-	vColor = vec4(color, 1);
+	vColor = vec4(color*y, 1);
 	vUV = anchor.xy;
-	gl_Position = viewProjection * vec4(pos, 1);
+	gl_Position = viewProjection * model * vec4(pos, 1);
 }

@@ -1,6 +1,6 @@
 
 import * as twgl from 'twgl';
-import { loadFiles } from './engine/loader';
+import { loadFiles } from './loader';
 import io from 'socket.io-client/dist/socket.io';
 const baseUrl = "asset/shader/";
 const gl = document.getElementById("canvas").getContext("webgl");
@@ -8,7 +8,7 @@ const gl = document.getElementById("canvas").getContext("webgl");
 export var shader = {};
 
 shader.list = {
-	"render": ["quad.vert", "render.frag"],
+	"render": ["particle.vert", "render.frag"],
 };
 
 shader.data = {};

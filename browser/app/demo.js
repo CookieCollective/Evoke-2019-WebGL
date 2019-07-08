@@ -1,19 +1,15 @@
 
-import { shader } from './shader';
+import { shader } from './engine/shader';
 import { mouse } from './engine/mouse';
-import { camera } from './camera';
+import { camera } from './engine/camera';
+import Geometry from './engine/geometry';
 import * as twgl from 'twgl';
 const gl = document.getElementById("canvas").getContext("webgl");
-const m4 = twgl.m4;
-const v3 = twgl.v3;
 
 export default function() {
 
-	const attributes = {
-		position: [ -1,-1,0, 1,-1,0, 1,1,0, -1,1,0 ],
-		texcoord: [ 0,0, 1,0, 1,1, 0,1 ],
-		indices: [ 0,1,2, 2,3,0 ],
-	};
+	const attributes = Geometry.create(Geometry.random(10))[0];
+
 	const bufferInfo = twgl.createBufferInfoFromArrays(gl, attributes);
 	const uniforms = {
 		resolution: [gl.canvas.width, gl.canvas.height],

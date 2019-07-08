@@ -1,6 +1,4 @@
 
-import { Texture } from 'three.js';
-
 
 function createCanvas(segments)
 {
@@ -40,11 +38,4 @@ function createCanvas(segments)
 	})
 
 	return ctx.canvas;
-}
-
-export function createTexture(segments)
-{
-	var texture = new Texture(createCanvas(segments));
-	texture.needsUpdate = true;
-	return texture;
 }

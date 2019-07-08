@@ -26,3 +26,4 @@ gui.go = function() {
 	gui.close();
 	gui.gone = true;
 }
+

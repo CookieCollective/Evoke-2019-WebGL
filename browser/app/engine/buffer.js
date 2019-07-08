@@ -7,8 +7,13 @@ const gl = document.getElementById("canvas").getContext("webgl");
 export var buffer = {};
 
 buffer.particle = {
-	attributes: Geometry.create(Geometry.random(10))[0],
+	attributes: Geometry.create(Geometry.random(100))[0],
 	material: "particle",
+};
+
+buffer.ribbon = {
+	attributes: Geometry.create(Geometry.random(10), [1,100])[0],
+	material: "ribbon",
 };
 
 buffer.quad = {

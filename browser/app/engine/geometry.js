@@ -62,7 +62,6 @@ export default class Geometry {
 		return geometries;
 	}
 
-		// geometry = new THREE.EdgesGeometry(geometry);
 	static createLine (attributes, subdivisions) {
 		var arrays = {
 			position: [],

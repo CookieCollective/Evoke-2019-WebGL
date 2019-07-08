@@ -1,19 +1,22 @@
 
-import * as twgl from 'twgl';
-import { loadFiles } from './loader';
-import io from 'socket.io-client/dist/socket.io';
+import * as twgl from "twgl";
+import { loadFiles } from "./loader";
+import io from "socket.io-client/dist/socket.io";
 const baseUrl = "asset/shader/";
 const gl = document.getElementById("canvas").getContext("webgl");
 
 export var shader = {};
 
+shader.preload = [ baseUrl+"header.glsl" ];
 shader.list = {
 	"particle": ["particle.vert", "color.frag"],
+	"ribbon": ["ribbon.vert", "color.frag"],
 };
-
+shader.header = "";
 shader.data = {};
 shader.program = {};
 shader.urls = [];
+var precision = "precision mediump float;"
 
 Object.keys(shader.list).forEach(key => {
 	shader.urls.push(baseUrl+shader.list[key][0]);
@@ -21,20 +24,27 @@ Object.keys(shader.list).forEach(key => {
 });
 
 shader.load = function (callback) {
-	loadFiles(shader.urls, function(error, content) {
-		Object.keys(content).forEach(key => {
-			shader.data[key] = content[key];
+	loadFiles(shader.preload, function(error, contentpreload) {
+		Object.keys(contentpreload).forEach(key => {
+			shader.header += contentpreload[key] + '\n';
 		});
-		Object.keys(shader.list).forEach(key => {
-			shader.program[key] = twgl.createProgramInfo(gl, [
-				shader.data[shader.list[key][0]],
-				shader.data[shader.list[key][1]]
-			]);
+		loadFiles(shader.urls, function(error, content) {
+			Object.keys(content).forEach(key => {
+				shader.data[key] = content[key];
+			});
+			Object.keys(shader.list).forEach(key => {
+				shader.program[key] = twgl.createProgramInfo(gl, [
+					shader.header+shader.data[shader.list[key][0]],
+					precision+shader.header+shader.data[shader.list[key][1]]
+				]);
+			})
+			if (callback != null) callback();
+		}, function (progress, fileName) {
+			console.log("loaded " + fileName);
 		})
-		if (callback != null) callback();
 	}, function (progress, fileName) {
-		console.log("loaded " + fileName);
-	})
+		console.log("preloaded " + fileName);
+	});
 }
 
 // hot reload
@@ -42,9 +52,9 @@ shader.load = function (callback) {
 let socket;
 
 function connect() {
-	socket = io('http://localhost:5776');
-	socket.on('change', change);
-	socket.on('disconnect', connect);
+	socket = io("http://localhost:5776");
+	socket.on("change", change);
+	socket.on("disconnect", connect);
 }
 
 function change(data) {
@@ -58,8 +68,8 @@ function change(data) {
 							shader.data[key] = content[key];
 						});
 						shader.program[key] = twgl.createProgramInfo(gl, [
-							shader.data[shader.list[key][0]],
-							shader.data[shader.list[key][1]]
+							shader.header+shader.data[shader.list[key][0]],
+							precision+shader.header+shader.data[shader.list[key][1]]
 						]);
 						console.log("reloaded " + url);
 					}, function (progress, fileName) {

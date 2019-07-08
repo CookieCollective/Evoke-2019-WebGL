@@ -30,11 +30,12 @@ export default function() {
 		mouse.update(elapsed);
 		if (mouse.clic) {
 			camera.rotation[0] += mouse.delta.x * 0.01;
-			camera.rotation[1] += mouse.delta.y * 0.01;
+			camera.rotation[1] -= mouse.delta.y * 0.01;
 		}
 		camera.update(elapsed);
 
 		uniforms.time = elapsed;
+		uniforms.cameraPosition = camera.position;
 		uniforms.viewProjection = camera.viewProjection;
 
 		gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
@@ -43,6 +44,7 @@ export default function() {
 		gl.clearColor(0,0,0,1);
 
 		draw(buffer["particle"]);
+		draw(buffer["ribbon"]);
 
 		requestAnimationFrame(animate);
 	}

@@ -8,7 +8,7 @@ const gl = document.getElementById("canvas").getContext("webgl");
 
 export var shader = {};
 
-shader.preload = [ "header.glsl", "vegetal.glsl" ];
+shader.preload = [ "header.glsl" ];
 shader.header = "";
 shader.data = {};
 shader.program = {};

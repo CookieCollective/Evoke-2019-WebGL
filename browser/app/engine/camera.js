@@ -6,10 +6,10 @@ const m4 = twgl.m4;
 
 export var camera = {};
 
-var distance = 1;
-var height = 1;
+var distance = 2;
+var height = 0;
 var position = [0,height,distance];
-var target = [0,0.5,0];
+var target = [0,0,0];
 var up = [0,1,0];
 var fieldOfView = 60.0;
 var near = 0.01;

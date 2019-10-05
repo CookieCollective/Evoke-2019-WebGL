@@ -26,6 +26,7 @@
       "blender-html5-animations": "github:KoltesDigital/blender-html5-animations@master",
       "css": "github:systemjs/plugin-css@^0.1.36",
       "dat.gui": "github:dataarts/dat.gui@^0.6.5",
+      "fft-js": "npm:fft-js@^0.0.12",
       "gl-matrix": "github:toji/gl-matrix@^2.4.0",
       "greggman/twgl.js": "github:greggman/twgl.js@^4.11.0",
       "json": "github:systemjs/plugin-json@^0.3.0",
